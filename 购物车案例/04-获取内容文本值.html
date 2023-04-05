@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="./jQuery.js"></script>
+
+    <script>
+      $(function () {
+        //  1、获取设置元素的内容值 html()
+        console.log($("div").html()); //Hello World
+        $("div").html("1234");
+
+        //2、1、获取设置元素文本的内容值 text()、
+        console.log($("div").text()); //1234
+        $("div").text("Hello WORLD");
+
+        //设置表单
+        console.log($("input").val()); //123456
+        $("input").val("Hello");
+      });
+    </script>
+    <div>Hello World</div>
+    <input type="text" value="12345" />
+  </body>
+</html>

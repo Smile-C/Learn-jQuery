@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="./jQuery.js"></script>
+    <a href="https://www.baidu.com" title="">百度一下</a>
+    <script>
+      $(function () {
+        // 获取属性的值
+        console.log($("a").prop("href")); //https://www.baidu.com
+        // 设置属性的值
+        $("a").prop("title", "你好呀！ ");
+      });
+    </script>
+  </body>
+</html>

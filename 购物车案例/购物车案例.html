@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .my-table {
+        border-collapse: collapse;
+        width: 60%;
+        font-size: 16px;
+        margin: 0px auto;
+      }
+
+      .my-table th,
+      .my-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+      }
+
+      .my-table th {
+        background-color: #f2f2f2;
+        color: #333;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .my-table td {
+        text-align: center;
+      }
+
+      .my-table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+      .my-table tfoot tr {
+        border: 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="./jQuery.js"></script>
+    <script>
+      $(function () {
+        //封装小记功能
+        function getXiaoji(priceDom, numDom, updateDom) {
+          const price = parseFloat(priceDom.text().substr(1));
+          const num = parseInt(numDom.text());
+          updateDom.text(`$${(price * num).toFixed(2)}`);
+        }
+
+        /**
+         * 实现了复选框的功能
+         */
+        $("#checkall").change(function () {
+          $(".j-checkbox, #checkall").prop("checked", $(this).prop("checked"));
+        });
+
+        $(".j-checkbox").change(function () {
+          if ($(".j-checkbox:checked").length === 3) {
+            $("#checkall").prop("checked", true);
+          } else {
+            $("#checkall").prop("checked", false);
+          }
+        });
+
+        /**
+         *
+         *购物车数量加减功能
+         **/
+
+        $(".inc").click(function () {
+          let index = parseInt($(this).siblings("span").text());
+          $(this).siblings("span").text(++index);
+
+          //更新小记
+          getXiaoji(
+            $(this).parent().parent().siblings(".price"),
+            $(this).siblings(".num"),
+            $(this).parent().parent().siblings(".xiaoji")
+          );
+        });
+
+        $(".dec").click(function () {
+          let index = parseInt($(this).siblings("span").text());
+          if (index == 0) {
+            return;
+          }
+          $(this).siblings("span").text(--index);
+          //更新小记
+
+          getXiaoji(
+            $(this).parents(".father").siblings(".price"),
+            $(this).siblings(".num"),
+            $(this).parents(".father").siblings(".xiaoji")
+          );
+        });
+
+        /**
+         *小记功能模块的实现
+         *
+         **/
+
+        //获取物品的单价
+      });
+    </script>
+    <table class="my-table">
+      <thead>
+        <tr>
+          <th><input type="checkbox" id="checkall" />全选</th>
+          <th>商品</th>
+          <th>单价</th>
+          <th>数量</th>
+          <th>小记</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="checkbox" class="j-checkbox" /></td>
+          <td>《jQuery从入门到精通》</td>
+          <td class="price">$49.9</td>
+          <td class="father">
+            <div>
+              <button class="dec">-</button>
+              <span class="num">1</span>
+              <button class="inc">+</button>
+            </div>
+          </td>
+          <td class="xiaoji">$49.9</td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" class="j-checkbox" /></td>
+          <td>《精通Vue.js》</td>
+          <td class="price">$32.9</td>
+          <td class="father">
+            <div>
+              <button class="dec">-</button>
+              <span class="num">1</span>
+              <button class="inc">+</button>
+            </div>
+          </td>
+          <td class="xiaoji">$32.9</td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" class="j-checkbox" /></td>
+          <td>《编程之美》</td>
+          <td class="price">$99.9</td>
+          <td class="father">
+            <div>
+              <button class="dec">-</button>
+              <span class="num">1</span>
+              <button class="inc">+</button>
+            </div>
+          </td>
+          <td class="xiaoji">$99.9</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td style="border: 0px">合计：100</td>
+        </tr>
+      </tfoot>
+    </table>
+  </body>
+</html>
