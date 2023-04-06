@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
+      .checked-item {
+        background-color: #fff4e8;
+      }
       .my-table {
         border-collapse: collapse;
         width: 60%;
@@ -29,10 +32,6 @@
       .my-table td {
         text-align: center;
       }
-
-      .my-table tbody tr:nth-child(even) {
-        background-color: #f9f9f9;
-      }
       .my-table tfoot tr {
         border: 0px;
       }
@@ -48,19 +47,48 @@
           const num = parseInt(numDom.text());
           updateDom.text(`$${(price * num).toFixed(2)}`);
         }
+        //封装更新底部更新数量和总价
+        function getAllNumAndPrice() {
+          let sum = 0;
+          let Allprice = 0;
+          $.each($(".num"), function (i, el) {
+            sum += parseInt($(el).text());
+          });
+          $(".xiaoji").each(function (i, el) {
+            // console.log(Allprice);
+            Allprice += parseFloat($(el).text().substr(1));
+          });
+
+          //更新底部的共选了几件产品
+          $(".bottoms").text(
+            `您共选了${sum}件商品，合计:$${Allprice.toFixed(2)}`
+          );
+        }
 
         /**
          * 实现了复选框的功能
          */
         $("#checkall").change(function () {
           $(".j-checkbox, #checkall").prop("checked", $(this).prop("checked"));
+          if ($(this).prop("checked")) {
+            $("tr").addClass("checked-item");
+          } else {
+            $("tr").removeClass("checked-item");
+          }
         });
 
         $(".j-checkbox").change(function () {
           if ($(".j-checkbox:checked").length === 3) {
             $("#checkall").prop("checked", true);
+            $("tr").addClass("checked-item");
           } else {
             $("#checkall").prop("checked", false);
+            $("tr").removeClass("checked-item");
+          }
+          if ($(this).prop("checked")) {
+            $(this).parent().parent().addClass("checked-item");
+          } else {
+            $(this).parent().parent().removeClass("checked-item");
           }
         });
 
@@ -69,6 +97,9 @@
          *购物车数量加减功能
          **/
 
+        /**
+         * 添加数量
+         */
         $(".inc").click(function () {
           let index = parseInt($(this).siblings("span").text());
           $(this).siblings("span").text(++index);
@@ -79,8 +110,14 @@
             $(this).siblings(".num"),
             $(this).parent().parent().siblings(".xiaoji")
           );
+
+          //================================
+          getAllNumAndPrice();
         });
 
+        /**
+         * 减少数量
+         */
         $(".dec").click(function () {
           let index = parseInt($(this).siblings("span").text());
           if (index == 0) {
@@ -94,14 +131,8 @@
             $(this).siblings(".num"),
             $(this).parents(".father").siblings(".xiaoji")
           );
+          getAllNumAndPrice();
         });
-
-        /**
-         *小记功能模块的实现
-         *
-         **/
-
-        //获取物品的单价
       });
     </script>
     <table class="my-table">
@@ -122,11 +153,11 @@
           <td class="father">
             <div>
               <button class="dec">-</button>
-              <span class="num">1</span>
+              <span class="num">0</span>
               <button class="inc">+</button>
             </div>
           </td>
-          <td class="xiaoji">$49.9</td>
+          <td class="xiaoji">$0</td>
         </tr>
         <tr>
           <td><input type="checkbox" class="j-checkbox" /></td>
@@ -135,11 +166,11 @@
           <td class="father">
             <div>
               <button class="dec">-</button>
-              <span class="num">1</span>
+              <span class="num">0</span>
               <button class="inc">+</button>
             </div>
           </td>
-          <td class="xiaoji">$32.9</td>
+          <td class="xiaoji">$0</td>
         </tr>
         <tr>
           <td><input type="checkbox" class="j-checkbox" /></td>
@@ -148,16 +179,18 @@
           <td class="father">
             <div>
               <button class="dec">-</button>
-              <span class="num">1</span>
+              <span class="num">0</span>
               <button class="inc">+</button>
             </div>
           </td>
-          <td class="xiaoji">$99.9</td>
+          <td class="xiaoji">$0</td>
         </tr>
       </tbody>
       <tfoot>
         <tr>
-          <td style="border: 0px">合计：100</td>
+          <td style="border: 0px; background: #fff" class="bottoms">
+            您共选了0件商品，合计：0
+          </td>
         </tr>
       </tfoot>
     </table>
